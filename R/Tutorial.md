@@ -2,12 +2,12 @@
 ## Tutorial for Pesca
 ### Data for enhancement
 (1) fragment files from spatial-ATAC-seq data; <br>
-(2) fragment files from scATAC-seq data; # should contain corresponding tissues/organs data as in spatial data <br>
+(2) fragment files from scATAC-seq data; # should contain corresponding tissues/organs data as in spatial data; <br>
 (3) annotations list for spots; # a list containing annotations used to find neighbors in matching spatial and single-cell data <br>
 
 ### Data for prediction
 (1) gene-by-spot matrix and coordinates matrix from spatial transcriptome data; <br>
-(2) fragment files from scATAC-seq data; # should contain corresponding tissues/organs data as in spatial data <br>
+(2) fragment files from scATAC-seq data; # should contain corresponding tissues/organs data as in spatial data; <br>
 (3) annotation list for spots; # the annotations are used to find neighbors in matching spatial and single-cell data <br>
 
 ```r
@@ -49,8 +49,8 @@ peaks=callpeak_scATAC(organs, # the organs/tissues whose data are used to call p
 
 ##### step2: generate scATAC peak-by-cell matrix and create SeuratObject
 ```r
-scATAC_Object=scATAC_processing(fragpath =fragpath,
-                                organs = organs,
+scATAC_Object=scATAC_processing(fragpath =fragpath, # fragment path 
+                                organs = organs, # the organs/tissues whose data are used to generate matrix
                                 peaks=peaks  # merged peak set in step1
                                )
 ```
@@ -58,8 +58,9 @@ scATAC_Object=scATAC_processing(fragpath =fragpath,
 ##### step3: generate spATAC peak-by-spot matrix and create SeuratObject
 ```r
 fragpath_spatac=dir('/spATAC_fragment_files_path',"*gz$",full.names=TRUE)
-anno=readRDS("./Ref2.spATAC_spots_annotations.rds")
+anno=readRDS("./Ref2.spATAC_spots_annotations.rds") # spots annotations
 peaks=readRDS("./Step0_2.MergedPeaks.rds") # merged peak set obtained in step1
+
 spATAC_Object=spATAC_processing(fragpath=fragpath_spatac, # fragment path 
                                 peaks=peaks, # merged peak set in step1
                                 anno = anno # spot annotation
@@ -73,7 +74,7 @@ Integrated=Enhancement_processing(scATAC = scATAC_Object,
                                   spATAC = spATAC_Object,
                                   organs = organs)
 # Enhance spatial ATAC data
-Assay_enhanced=Enhancemment(IntegratedData=Integrated, # Integrated datasets
+Assay_enhanced=Enhancemment(IntegratedData=Integrated, # integrated datasets
                             k.neighbor = 200, # the number of initial neighbors
                             k=10, # the number of final single-cell neighbors for each spot
                             dims = 1:30, # dims when finding neighbors
@@ -91,10 +92,10 @@ Integrated=Prediction_processing(scATAC = scATAC_Object,
                                  default.assay="spatial", # the count assay of spRNA
                                  anno=anno)
 # predict spatial ATAC data
-Assay_predicted=Enhancemment(IntegratedData=Integrated, # Integrated datasets
-                             k.neighbor = 200, # Initial number of neighbors
+Assay_predicted=Enhancemment(IntegratedData=Integrated, # integrated datasets
+                             k.neighbor = 200, # initial number of neighbors
                              k=10, # the number of single-cell neighbors for each spot
-                             dims = 1:30, # dims when finding neighbors
+                             dims = 1:30, # dims used when finding neighbors
                              organs)
 
 ```
