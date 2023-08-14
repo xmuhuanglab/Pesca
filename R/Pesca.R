@@ -96,13 +96,13 @@ scATAC_processing=function( fragpath, # Path to stored fragment file (tabix)
   print("Number of total peaks:",nrow(sc_atac))
   
   if(genome=="mm10"){
-    annotations <- ann_data$v79
+    annotations <- GetGRangesFromEnsDb(ensdb = EnsDb.Mmusculus.v79)
   }else if(
     genome=="hg19"
   ){
-    annotations <- ann_data$v75
+    annotations <- GetGRangesFromEnsDb(ensdb = EnsDb.Hsapiens.v75)
   }else{
-    annotations <- ann_data$v86
+    annotations <- GetGRangesFromEnsDb(ensdb = EnsDb.Hsapiens.v86)
   }
   seqlevelsStyle(annotations) <- 'UCSC'
   Annotation(sc_atac) <- annotations
@@ -166,13 +166,13 @@ spATAC_processing=function(fragpath_spatac, # The path of spatial ATAC fragment 
   print("Number of total peaks:",nrow(sp_atac),"in spatial ATAC data")
   
   if(genome=="mm10"){
-    annotations <- ann_data$v79
+    annotations <- GetGRangesFromEnsDb(ensdb = EnsDb.Mmusculus.v79)
   }else if(
     genome=="hg19"
   ){
-    annotations <- ann_data$v75
+    annotations <- GetGRangesFromEnsDb(ensdb = EnsDb.Hsapiens.v75)
   }else{
-    annotations <- ann_data$v86
+    annotations <- GetGRangesFromEnsDb(ensdb = EnsDb.Hsapiens.v86)
   }
   seqlevelsStyle(annotations) <- 'UCSC'
   Annotation(sp_atac) <- annotations
