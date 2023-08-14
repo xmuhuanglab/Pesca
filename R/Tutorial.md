@@ -51,7 +51,7 @@ peaks=callpeak_scATAC(organs, # the organs/tissues whose data are used to call p
 ```r
 scATAC_Object=scATAC_processing(fragpath =fragpath, # fragment path 
                                 organs = organs, # the organs/tissues whose data are used to generate matrix
-                                peaks=peaks  # merged peak set in step1
+                                peaks=peaks  # merged peak set in step1,  Granges format
                                )
 ```
 
@@ -62,7 +62,7 @@ anno=readRDS("./Ref2.spATAC_spots_annotations.rds") # spots annotations
 peaks=readRDS("./Step0_2.MergedPeaks.rds") # merged peak set obtained in step1
 
 spATAC_Object=spATAC_processing(fragpath=fragpath_spatac, # fragment path 
-                                peaks=peaks, # merged peak set in step1
+                                peaks=peaks, # merged peak set in step1, Granges format
                                 anno = anno # spot annotation
                                )
 ```
