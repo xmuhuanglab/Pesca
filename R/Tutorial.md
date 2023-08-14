@@ -1,14 +1,14 @@
 
 ## Tutorial for Pesca
-## Pesca enhance spatial ATAC data
-(1) fragment files from spatial-ATAC-seq data;
-(2) fragment files from scATAC-seq data; # should contain corresponding tissues/organs data as in spatial data
-(3) annotations list for spots; # a list containing annotations used to find neighbors in matching spatial and single-cell data
+### Data for enhancement
+(1) fragment files from spatial-ATAC-seq data; <br>
+(2) fragment files from scATAC-seq data; # should contain corresponding tissues/organs data as in spatial data <br>
+(3) annotations list for spots; # a list containing annotations used to find neighbors in matching spatial and single-cell data <br>
 
-## Pesca predict spatial ATAC data
-(1) gene-by-spot matrix and coordinates matrix from spatial transcriptome data;
-(2) fragment files from scATAC-seq data; # should contain corresponding tissues/organs data as in spatial data
-(3) annotation list for spots; # the annotations are used to find neighbors in matching spatial and single-cell data
+### Data for prediction
+(1) gene-by-spot matrix and coordinates matrix from spatial transcriptome data; <br>
+(2) fragment files from scATAC-seq data; # should contain corresponding tissues/organs data as in spatial data <br>
+(3) annotation list for spots; # the annotations are used to find neighbors in matching spatial and single-cell data <br>
 
 ```r
 setwd("Workdir")
@@ -32,14 +32,14 @@ load("./Data/Ref1.annotation.rdata")
 source("./Pesca.R")
 ```
 
-## Part1:Data Processing 
+## Part1: Data Processing 
 ```r
 organs=c("forebrain")
 fragpath = dir('/scATAC_fragment_files_path',"*gz$",full.names=TRUE)
 macs2_path="/macs2_path"
 ```
 
-### step1: call peaks using fragment file from scATAC-seq data
+##### step1: call peaks using fragment file from scATAC-seq data
 ```r
 peaks=callpeak_scATAC(organs, # the organs/tissues whose data are used to call peaks
                       fragpath, # the path storing fragment file (tabix), filename of fragment should contain tissue info, like forebrain_fragments.tsv.gz
@@ -47,7 +47,7 @@ peaks=callpeak_scATAC(organs, # the organs/tissues whose data are used to call p
                       )
 ```
 
-### step2: generate scATAC peak-by-cell matrix and create SeuratObject
+##### step2: generate scATAC peak-by-cell matrix and create SeuratObject
 ```r
 scATAC_Object=scATAC_processing(fragpath =fragpath,
                                 organs = organs,
@@ -55,7 +55,7 @@ scATAC_Object=scATAC_processing(fragpath =fragpath,
                                )
 ```
 
-### step3: generate spATAC peak-by-spot matrix and create SeuratObject
+##### step3: generate spATAC peak-by-spot matrix and create SeuratObject
 ```r
 fragpath_spatac=dir('/spATAC_fragment_files_path',"*gz$",full.names=TRUE)
 anno=readRDS("./Ref2.spATAC_spots_annotations.rds")
