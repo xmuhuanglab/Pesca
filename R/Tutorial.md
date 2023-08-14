@@ -8,7 +8,7 @@
 ### Data for prediction
 (1) gene-by-spot matrix and coordinates matrix from spatial transcriptome data; <br>
 (2) fragment files from scATAC-seq data; # should contain corresponding tissues/organs data as in spatial data; <br>
-(3) annotation list for spots; # the annotations are used to find neighbors in matching spatial and single-cell data <br>
+(3) annotations list for spots; # the annotations are used to find neighbors in matching spatial and single-cell data <br>
 
 ```r
 setwd("Workdir")
