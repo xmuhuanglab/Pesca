@@ -20,6 +20,7 @@ When predicting spatial ATAC profile, the fragment files of scATA-seq data shoul
 (2) scATAC-seq: peak-by-cell matrix and fragment files; <br>
 (3) cell type annotations for spots and cells (optional); <br>
 
+As an example, here we only enhanced the spatial ATAC profiles of forebrain and midbrain from E13 mouse, which are from research 10.1038/s41586-023-05795-1. The corresponding scATAC-seq data of E13.5 mouse used for enhancement are from 10.1016/j.celrep.2023.112210.
 
 ## Data Processing 
 #### Data Processing (input data are fragment files)
@@ -95,7 +96,7 @@ spATAC_Object <- spATAC_processing(fragpath_spatac = NULL, # path storing spATAC
 ## Pesca enhancement 
 Pesca enhances spatial ATAC profile using scATAC-seq data. Firstly, scATAC-seq and spATA data will be integrated using LSI or CCA reduction. Since CCA-based integration may also lead to overcorrection, so we recommend “rlsi” as the first choice. Then Harmony will be used for second-round integration. In the common space, Pesca will identify the k nearest single-cell neighbors for each spatial spot, the number of k depends on the spot size. Notably, if the annotations are given, the neighbor identification will be restricted to the same cell type, assuring the origin similarity of the spot and their neighbors. After that, the chromatin accessibility of single-cell neighbors will be used to enhance the spatial profile where the distances of spatial neighbors and the anchor score will be used to calculate the anchor weight.
 
-As an example, here we only enhanced the spatial ATAC profile of forebrain and midbrain from E13 mouse, which is from research 10.1038/s41586-023-05795-1.
+
 ```r
 scATAC <- readRDS("./Processing_scATAC/5.scATAC_object.rds")
 spATAC <- readRDS("./Processing_spATAC/1.spATAC_object.rds")
