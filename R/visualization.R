@@ -1,6 +1,6 @@
 mySpatialDimPlot <- function(metadata, # the meta.data in the seurat objectBDB76B
-                          row, # the column which contains the x coordinate information
-                          col, # the column which contains the y coordinate information
+                          x, # the column which contains the x coordinate information
+                          y, # the column which contains the y coordinate information
                           color, # the column contain cluster column
                           pointsize = 2.5, # the spot size for visualization
                           colors = NULL # the color for the cluster
@@ -11,7 +11,7 @@ mySpatialDimPlot <- function(metadata, # the meta.data in the seurat objectBDB76
   if(is.null(colors)){
     colors <- color_ref[1:length(unique(metadata[,color]))]
   }
-  temp <- metadata[,c(row, col, color)]
+  temp <- metadata[,c(x, y, color)]
   colnames(temp) <- c("a", "b", "c")
 
   p <- ggplot(temp, aes(a, b, color = c)) + geom_point(size = pointsize) + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.border = element_blank(), axis.title = element_blank(), axis.text = element_blank(), axis.ticks = element_blank(), panel.background = element_rect(fill = 'white'), plot.background = element_rect(fill = "white")) + theme(legend.title = element_blank(), legend.key = element_rect(fill = 'white'), legend.text = element_text(size = 10), legend.key.size = unit(1, 'cm') )+scale_color_manual(values = colors)
@@ -22,6 +22,8 @@ mySpatialDimPlot <- function(metadata, # the meta.data in the seurat objectBDB76
 
 mySpatialFeaturePlot <- function(object, # seurat object
                                  feature, # the features used to plot 
+                                 x,
+                                 y,
                                  pointsize = 2.5, # spot size
                                  scale = FALSE, # whether scale the data
                                  ncol = 2, # the number of column for plots when the number of features is more than two
@@ -30,7 +32,7 @@ mySpatialFeaturePlot <- function(object, # seurat object
                                  ){
   print(feature)
   data <- object@meta.data
-  data <- data[,c("row", "col")]
+  data <- data[,c(x,y)]
   data$cell <- rownames(data)
   rownames(data) <- NULL
   
@@ -61,10 +63,10 @@ mySpatialFeaturePlot <- function(object, # seurat object
   
   # plot data
   if(length(feature) == 1){
-    p <- ggplot(finaldata, aes(row, col, color = expre)) + geom_point(size = pointsize) + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.border = element_blank(), axis.title = element_blank(), axis.text = element_blank(), axis.ticks = element_blank(), panel.background = element_rect(fill = 'white'), plot.background = element_rect(fill = "white")) + theme(legend.title = element_blank(), legend.key = element_rect(fill = 'white'), legend.text = element_text(size = 10), legend.key.size = unit(1, 'cm') ) + scale_color_gradientn(colours = c(colorRampPalette(c("#5b51a3", "#79c9a4", "#f2faac", "#fdb465", "#a4104d"))(90)), limits = c(min(finaldata$expre), max(finaldata$expre)))
+    p <- ggplot(finaldata, aes(x, y, color = expre)) + geom_point(size = pointsize) + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.border = element_blank(), axis.title = element_blank(), axis.text = element_blank(), axis.ticks = element_blank(), panel.background = element_rect(fill = 'white'), plot.background = element_rect(fill = "white")) + theme(legend.title = element_blank(), legend.key = element_rect(fill = 'white'), legend.text = element_text(size = 10), legend.key.size = unit(1, 'cm') ) + scale_color_gradientn(colours = c(colorRampPalette(c("#5b51a3", "#79c9a4", "#f2faac", "#fdb465", "#a4104d"))(90)), limits = c(min(finaldata$expre), max(finaldata$expre)))
     return(p)
   }else{
-    p <- ggplot(finaldata, aes(row, col, color = expre)) + geom_point(size = pointsize) + facet_grid(~feature) + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.border = element_blank(), axis.title = element_blank(), axis.text = element_blank(), axis.ticks = element_blank(), panel.background = element_rect(fill = 'white'), plot.background = element_rect(fill = "white"))+theme(legend.title = element_blank(), legend.key = element_rect(fill = 'white'), legend.text = element_text(size = 10),legend.key.size=unit(1, 'cm') ) + scale_color_gradientn(colours = c(colorRampPalette(c("#5b51a3", "#79c9a4", "#f2faac", "#fdb465", "#a4104d"))(90)), limits = c(min(finaldata$expre), max(finaldata$expre)));p
+    p <- ggplot(finaldata, aes(x, y, color = expre)) + geom_point(size = pointsize) + facet_grid(~feature) + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.border = element_blank(), axis.title = element_blank(), axis.text = element_blank(), axis.ticks = element_blank(), panel.background = element_rect(fill = 'white'), plot.background = element_rect(fill = "white"))+theme(legend.title = element_blank(), legend.key = element_rect(fill = 'white'), legend.text = element_text(size = 10),legend.key.size=unit(1, 'cm') ) + scale_color_gradientn(colours = c(colorRampPalette(c("#5b51a3", "#79c9a4", "#f2faac", "#fdb465", "#a4104d"))(90)), limits = c(min(finaldata$expre), max(finaldata$expre)))
     return(p)
   }
 }
