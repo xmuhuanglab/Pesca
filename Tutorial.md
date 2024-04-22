@@ -100,11 +100,12 @@ spATAC_Object <- spATAC_processing(fragpath_spatac = NULL, # path storing spATAC
 ## Pesca enhancement 
 Pesca enhances spatial ATAC profile using scATAC-seq data. Firstly, scATAC-seq and spATA data will be integrated using LSI or CCA reduction. Since CCA-based integration may also lead to overcorrection, so we recommend “rlsi” as the first choice. Then Harmony will be used for second-round integration. In the common space, Pesca will identify the k nearest single-cell neighbors for each spatial spot, the number of k depends on the spot size. Notably, if the annotations are given, the neighbor identification will be restricted to the same cell type, assuring the origin similarity of the spot and their neighbors. After that, the chromatin accessibility of single-cell neighbors will be used to enhance the spatial profile where the distances of spatial neighbors and the anchor score will be used to calculate the anchor weight.
 
+As an example, here we only enhanced the spatial ATAC profile of forebrain and midbrain from E13 mouse, which is from research 10.1038/s41586-023-05795-1.
 ```r
 scATAC <- readRDS("./Processing_scATAC/5.scATAC_object.rds")
 spATAC <- readRDS("./Processing_spATAC/1.spATAC_object.rds")
 
-cell_type <- c("forebrain", "midbrain", "hindbrain")
+cell_type <- c("forebrain", "midbrain")
 enhanced_spATAC <- Enhancement(scATAC = scATAC, # Seurat object of scATAC-seq
                                spATAC = spATAC , # Seurat object of spATAC data
                                processing_scATAC = TRUE, # whether scATAC-seq data will be processed
@@ -137,8 +138,6 @@ plot0 <- mySpatialDimPlot(metadata = spATAC@meta.data,
                           colors = NULL 
 );print(plot0)
 
-![plot0](https://github.com/xmuhuanglab/Pesca/assets/95668602/7dcaf6c3-1956-4bde-ab20-957d9a4b094d)
-
 features <- rownames(spATAC)[1:10]
 plot1 <- mySpatialFeaturePlot(object = spATAC, # Seurat object
                               feature = features[1], # the features used to plot
@@ -151,8 +150,6 @@ plot1 <- mySpatialFeaturePlot(object = spATAC, # Seurat object
                               slot = "data" # the slot in the assay 
 );print(plot1)
 
-![plot1](https://github.com/xmuhuanglab/Pesca/assets/95668602/3c3444f2-f2d7-4825-92f3-c5756f4b623c)
-
 
 plot2 <- mySpatialFeaturePlot(object = spATAC, # Seurat object
                               feature = features[1], # the features used to plot
@@ -164,7 +161,6 @@ plot2 <- mySpatialFeaturePlot(object = spATAC, # Seurat object
                               assay = "peaks" , # the assay data used to plot 
                               slot = "data" # the slot in the assay 
 );print(plot2)
-![plot2](https://github.com/xmuhuanglab/Pesca/assets/95668602/759cdde3-1ec1-4030-afd4-a35c56e2de8e)
 
 ```
 
